@@ -9,35 +9,22 @@
     <style>
         :root { --gold: #d4af37; --bg: #fffaf0; --text: #2c3e50; }
         body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; user-select: none; }
-        
         canvas#petals { position: fixed; inset: 0; z-index: -1; }
-
         #lock { position: fixed; inset: 0; background: white; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 1s; }
         .lock-card { padding: 40px; border-radius: 30px; border: 2px solid var(--gold); width: 85%; max-width: 400px; box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2); }
         .lock-card h1 { font-family: 'Amiri', serif; color: var(--gold); margin-bottom: 5px; font-size: 2.2em; }
         input, textarea { padding: 15px; border-radius: 12px; border: 1px solid #ccc; width: 85%; margin: 10px 0; text-align: center; font-size: 16px; outline: none; background: #fff; color: #000; font-family: 'Cairo'; }
-        
-        .gold-btn { 
-            padding: 15px 40px; border-radius: 50px; background: linear-gradient(45deg, #d4af37, #f2d472); color: white; border: none; 
-            cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); 
-        }
-        .gold-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
-
+        .gold-btn { padding: 15px 40px; border-radius: 50px; background: linear-gradient(45deg, #d4af37, #f2d472); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
         #content { display: none; opacity: 0; transition: 2s; padding: 20px; padding-bottom: 100px; }
-
         .main-photo { border: 10px solid white; border-bottom: 60px solid white; border-radius: 5px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); width: 90%; max-width: 400px; margin: 30px auto; position: relative; }
         .main-photo img { width: 100%; display: block; }
         .main-photo::after { content: 'Wedding Day'; position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-family: 'Amiri', serif; font-size: 1.5em; color: var(--gold); }
-
         .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 500px; margin: 30px auto; }
         .count-item { background: white; border: 1px solid var(--gold); padding: 15px 5px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .count-item b { display: block; font-size: 1.5em; color: var(--gold); }
         .count-item span { font-size: 0.7em; color: #777; }
-
         #typing-text { font-family: 'Amiri', serif; font-size: 1.6em; line-height: 1.8; color: #444; max-width: 600px; margin: 40px auto; min-height: 150px; white-space: pre-line; }
-
         .guestbook-section { margin-top: 50px; padding: 30px; background: white; border-radius: 25px; border: 1px solid var(--gold); max-width: 500px; margin: 40px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-
         .heart-particle { position: absolute; pointer-events: none; animation: pop 0.8s ease-out forwards; color: var(--gold); z-index: 9999; }
         @keyframes pop { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-50px); opacity: 0; } }
     </style>
@@ -45,7 +32,7 @@
 <body onclick="createHeart(event)">
 
     <canvas id="petals"></canvas>
-    <div id="player-container" style="position: absolute; left: -9999px;"><div id="player"></div></div>
+    <div id="player" style="position: absolute; top: -9999px;"></div>
 
     <div id="lock">
         <div class="lock-card">
@@ -60,20 +47,16 @@
 
     <div id="content">
         <h2 style="font-family: 'Amiri'; color: var(--gold); font-size: 2.5em; margin-bottom: 20px;">دعوة زفاف ❤️</h2>
-
         <div class="main-photo">
             <img src="body1.png" onerror="this.src='https://via.placeholder.com/400x600?text=Wedding+Day'">
         </div>
-
         <div class="countdown">
             <div class="count-item"><b id="d">00</b><span>أيام</span></div>
             <div class="count-item"><b id="h">00</b><span>ساعات</span></div>
             <div class="count-item"><b id="m">00</b><span>دقائق</span></div>
             <div class="count-item"><b id="s">00</b><span>ثواني</span></div>
         </div>
-
         <div id="typing-text"></div>
-
         <div class="guestbook-section">
             <h3 style="color: var(--gold); font-family: 'Amiri'; font-size: 1.8em;">اكتب لنا كلمة حلوة ✨</h3>
             <input type="text" id="guest-name" placeholder="اسمك الكريم...">
@@ -81,13 +64,11 @@
             <br>
             <button class="gold-btn" onclick="sendWish()">إرسال المباركة ❤️</button>
         </div>
-
         <div style="margin-top: 50px; padding: 20px; background: rgba(212, 175, 55, 0.05); border-radius: 20px;">
             <h3 style="color: var(--gold);">مكان الفرح 🏠</h3>
             <p>مستنينكم تنورونا وتشاركونا أجمل لحظاتنا</p>
             <button class="gold-btn" onclick="window.open('https://maps.app.goo.gl/fuwEQv7VB2tWXY3h8', '_blank')">فتح الموقع على الخريطة 📍</button>
         </div>
-        
         <p style="margin-top: 60px; font-family: 'Amiri'; font-size: 1.8em; color: var(--gold);">دامت أيامكم بالأفراح ❤️</p>
     </div>
 
@@ -100,8 +81,7 @@
         function draw() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
             petals.forEach(p => {
-                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
-                ctx.fillStyle = "#ffb7c5";
+                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = "#ffb7c5";
                 ctx.beginPath(); ctx.ellipse(0,0,p.r, p.r*1.5, 0,0,Math.PI*2); ctx.fill(); ctx.restore();
                 p.y += p.v; p.a += 0.01; if(p.y > canvas.height) p.y = -20;
             });
@@ -122,14 +102,21 @@
         }, 1000);
 
         var player;
-        function onYouTubeIframeAPIReady() { 
-            // تم تغيير الأغنية لـ "دبلة الخطوبة" - شادية
-            player = new YT.Player('player', { height: '1', width: '1', videoId: 'Y-UvQpMsc-M' }); 
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '1', width: '1',
+                videoId: 'u9h-z29wV0U', // كود بديل ومضمون لأغنية دبلة الخطوبة
+                playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 'enablejsapi': 1 }
+            });
         }
 
         function unlock() {
             if(document.getElementById('pass').value.trim() === '0000') {
-                if(player && player.playVideo) player.playVideo();
+                if(player) {
+                    player.unMute();
+                    player.setVolume(100);
+                    player.playVideo();
+                }
                 confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff', '#ff0000'] });
                 document.getElementById('lock').style.opacity = '0';
                 setTimeout(() => {
@@ -145,11 +132,7 @@
             const el = document.getElementById('typing-text');
             let i = 0;
             function type() {
-                if(i < invitationMessage.length) {
-                    el.innerHTML += invitationMessage.charAt(i);
-                    i++;
-                    setTimeout(type, 50);
-                }
+                if(i < invitationMessage.length) { el.innerHTML += invitationMessage.charAt(i); i++; setTimeout(type, 50); }
             }
             type();
         }
@@ -160,11 +143,7 @@
             if(name && msg) {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
                 alert("شكراً يا " + name + "! وصلت مباركتك الجميلة ❤️");
-                // اختيارياً: ممكن نفتح واتساب يبعتلك الرسالة
-                // window.open('https://wa.me/رقمك_هنا?text=' + name + ': ' + msg);
-            } else {
-                alert("من فضلك اكتب اسمك ورسالتك عشان نفرح بيها! 😊");
-            }
+            } else { alert("من فضلك اكتب اسمك ورسالتك! 😊"); }
         }
 
         function createHeart(e) {
