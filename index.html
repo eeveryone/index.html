@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف: عبدالله ونانسي ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:ital,wght@1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --gold: #d4af37; --bg: #fffaf0; --text: #2c3e50; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; user-select: none; }
+        
+        canvas#petals { position: fixed; inset: 0; z-index: -1; }
+
+        #lock { position: fixed; inset: 0; background: white; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 1s; }
+        .lock-card { padding: 40px; border-radius: 30px; border: 2px solid var(--gold); width: 85%; max-width: 400px; box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2); }
+        .lock-card h1 { font-family: 'Amiri', serif; color: var(--gold); margin-bottom: 5px; font-size: 2.2em; }
+        input { padding: 15px; border-radius: 12px; border: 1px solid #ccc; width: 85%; margin: 20px 0; text-align: center; font-size: 18px; outline: none; background: #fff; color: #000; }
+        
+        .gold-btn { 
+            padding: 15px 40px; border-radius: 50px; background: linear-gradient(45deg, #d4af37, #f2d472); color: white; border: none; 
+            cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); 
+        }
+        .gold-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        #content { display: none; opacity: 0; transition: 2s; padding: 20px; padding-bottom: 100px; }
+
+        .main-photo { border: 10px solid white; border-bottom: 60px solid white; border-radius: 5px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); width: 90%; max-width: 400px; margin: 30px auto; position: relative; }
+        .main-photo img { width: 100%; display: block; }
+        .main-photo::after { content: 'Wedding Day'; position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-family: 'Amiri', serif; font-size: 1.5em; color: var(--gold); }
+
+        .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 500px; margin: 30px auto; }
+        .count-item { background: white; border: 1px solid var(--gold); padding: 15px 5px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .count-item b { display: block; font-size: 1.5em; color: var(--gold); }
+        .count-item span { font-size: 0.7em; color: #777; }
+
+        #typing-text { font-family: 'Amiri', serif; font-size: 1.6em; line-height: 1.8; color: #444; max-width: 600px; margin: 40px auto; min-height: 150px; white-space: pre-line; }
+
+        .location-section { margin-top: 50px; padding: 20px; background: rgba(212, 175, 55, 0.05); border-radius: 20px; }
+        
+        .heart-particle { position: absolute; pointer-events: none; animation: pop 0.8s ease-out forwards; color: var(--gold); z-index: 9999; }
+        @keyframes pop { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-50px); opacity: 0; } }
+    </style>
+</head>
+<body onclick="createHeart(event)">
+
+    <canvas id="petals"></canvas>
+    <div id="player-container" style="position: absolute; left: -9999px;"><div id="player"></div></div>
+
+    <div id="lock">
+        <div class="lock-card">
+            <h1>17 May 2026</h1>
+            <p style="margin-top: 0; color: #888;">يوم الفرح المنتظر ❤️</p>
+            <input type="password" id="pass" placeholder="كلمة السر...">
+            <br>
+            <button class="gold-btn" onclick="unlock()">فتح الدعوة 💍</button>
+        </div>
+    </div>
+
+    <div id="content">
+        <h2 style="font-family: 'Amiri'; color: var(--gold); font-size: 2.5em; margin-bottom: 0;">دعوة زفاف ❤️</h2>
+        <p style="letter-spacing: 2px; color: #999;">عبدالله & نانسي</p>
+
+        <div class="main-photo">
+            <img src="body1.png" onerror="this.src='https://via.placeholder.com/400x600?text=Abdullah+%26+Nancy'">
+        </div>
+
+        <div class="countdown">
+            <div class="count-item"><b id="d">00</b><span>أيام</span></div>
+            <div class="count-item"><b id="h">00</b><span>ساعات</span></div>
+            <div class="count-item"><b id="m">00</b><span>دقائق</span></div>
+            <div class="count-item"><b id="s">00</b><span>ثواني</span></div>
+        </div>
+
+        <div id="typing-text"></div>
+
+        <div class="location-section">
+            <h3 style="color: var(--gold);">مكان الفرح 🏠</h3>
+            <p>مستنينكم تنورونا وتشاركونا أجمل لحظاتنا</p>
+            <button class="gold-btn" onclick="window.open('https://maps.app.goo.gl/fuwEQv7VB2tWXY3h8', '_blank')">فتح الموقع على الخريطة 📍</button>
+        </div>
+        
+        <p style="margin-top: 60px; font-family: 'Amiri'; font-size: 1.8em; color: var(--gold);">دامت أيامكم بالأفراح ❤️</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('petals');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const petals = [];
+        for(let i=0; i<30; i++) petals.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*5+2, v: Math.random()*1+0.5, a: Math.random()*Math.PI});
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            petals.forEach(p => {
+                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+                ctx.fillStyle = "#ffb7c5";
+                ctx.beginPath(); ctx.ellipse(0,0,p.r, p.r*1.5, 0,0,Math.PI*2); ctx.fill(); ctx.restore();
+                p
