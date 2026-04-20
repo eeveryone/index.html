@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دعوة زفاف: عبدالله ونانسي ❤️</title>
+    <title>دعوة زفاف ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:ital,wght@1,700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -51,18 +51,18 @@
         <div class="lock-card">
             <h1>17 May 2026</h1>
             <p style="margin-top: 0; color: #888;">يوم الفرح المنتظر ❤️</p>
-            <input type="password" id="pass" placeholder="كلمة السر...">
+            <p style="color: var(--gold); font-weight: bold; margin-top: 10px;">كلمة السر هي: 0000</p>
+            <input type="password" id="pass" placeholder="ادخل كلمة السر...">
             <br>
             <button class="gold-btn" onclick="unlock()">فتح الدعوة 💍</button>
         </div>
     </div>
 
     <div id="content">
-        <h2 style="font-family: 'Amiri'; color: var(--gold); font-size: 2.5em; margin-bottom: 0;">دعوة زفاف ❤️</h2>
-        <p style="letter-spacing: 2px; color: #999;">عبدالله & نانسي</p>
+        <h2 style="font-family: 'Amiri'; color: var(--gold); font-size: 2.5em; margin-bottom: 20px;">دعوة زفاف ❤️</h2>
 
         <div class="main-photo">
-            <img src="body1.png" onerror="this.src='https://via.placeholder.com/400x600?text=Abdullah+%26+Nancy'">
+            <img src="body1.png" onerror="this.src='https://via.placeholder.com/400x600?text=Wedding+Day'">
         </div>
 
         <div class="countdown">
@@ -95,4 +95,65 @@
                 ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
                 ctx.fillStyle = "#ffb7c5";
                 ctx.beginPath(); ctx.ellipse(0,0,p.r, p.r*1.5, 0,0,Math.PI*2); ctx.fill(); ctx.restore();
-                p
+                p.y += p.v; p.a += 0.01; if(p.y > canvas.height) p.y = -20;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        const weddingDate = new Date("May 17, 2026 20:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            if(diff > 0) {
+                document.getElementById("d").innerText = Math.floor(diff / 86400000);
+                document.getElementById("h").innerText = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById("m").innerText = Math.floor((diff % 3600000) / 60000);
+                document.getElementById("s").innerText = Math.floor((diff % 60000) / 1000);
+            }
+        }, 1000);
+
+        var player;
+        function onYouTubeIframeAPIReady() { player = new YT.Player('player', { height: '1', width: '1', videoId: 'xMQieNosdII' }); }
+
+        function unlock() {
+            // الباسورد اتغير لـ 0000
+            if(document.getElementById('pass').value.trim() === '0000') {
+                if(player && player.playVideo) player.playVideo();
+                confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff', '#ff0000'] });
+                document.getElementById('lock').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lock').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                    setTimeout(() => { document.getElementById('content').style.opacity = '1'; startTyping(); }, 100);
+                }, 1000);
+            } else { alert("كلمة السر غلط! هي 0000 😉"); }
+        }
+
+        const invitationMessage = "نتشرف بدعوتكم بحضور يوم من أجمل أيام حياتنا..\nومعنى إنك وصلت هنا يبقى إنت شخص عزيز علينا ونحب نشركك أجمل أيام حياتنا.\nمستنيينكم تنورونا.. ❤️";
+        function startTyping() {
+            const el = document.getElementById('typing-text');
+            let i = 0;
+            function type() {
+                if(i < invitationMessage.length) {
+                    el.innerHTML += invitationMessage.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        function createHeart(e) {
+            const h = document.createElement('div'); h.innerHTML = '❤️'; h.className = 'heart-particle';
+            h.style.left = e.pageX + 'px'; h.style.top = e.pageY + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 800);
+        }
+
+        var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+</body>
+</html>
